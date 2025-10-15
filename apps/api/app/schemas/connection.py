@@ -18,6 +18,7 @@ class ConnectionCreate(ConnectionBase):
 class ConnectionUpdate(BaseModel):
     """Schema for updating a connection."""
     status: Optional[str] = None
+    is_active: Optional[bool] = None
     credentials: Optional[dict] = None
 
 
@@ -26,6 +27,7 @@ class ConnectionResponse(ConnectionBase):
     id: int
     user_id: int
     status: str
+    is_active: bool
     created_at: datetime
     updated_at: Optional[datetime] = None
 

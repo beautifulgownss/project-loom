@@ -95,7 +95,7 @@ export default function ComposerPage() {
       const formData = getValues();
 
       await apiClient.createFollowUp({
-        connection_id: 1, // TODO: Replace with actual connection selection
+        // connection_id is optional - backend automatically assigns first active connection
         original_recipient: formData.to_email,
         original_subject: formData.subject,
         original_body: formData.thread_context,

@@ -29,6 +29,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [cancellingId, setCancellingId] = useState<number | null>(null);
+  const [sendingId, setSendingId] = useState<number | null>(null);
 
   const fetchJobs = async () => {
     setLoading(true);
@@ -61,6 +62,24 @@ export default function DashboardPage() {
       alert(err instanceof Error ? err.message : "Failed to cancel follow-up");
     } finally {
       setCancellingId(null);
+    }
+  };
+
+  const handleSendNow = async (jobId: number) => {
+    if (!confirm("Send this follow-up immediately? This will bypass the scheduled time.")) {
+      return;
+    }
+
+    setSendingId(jobId);
+    try {
+      await apiClient.sendFollowUpNow(jobId);
+      alert("Follow-up sent successfully!");
+      // Refresh the list
+      await fetchJobs();
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Failed to send follow-up");
+    } finally {
+      setSendingId(null);
     }
   };
 
@@ -360,13 +379,22 @@ export default function DashboardPage() {
                           View
                         </Link>
                         {(job.status === "pending" || job.status === "scheduled") && (
-                          <button
-                            onClick={() => handleCancel(job.id)}
-                            disabled={cancellingId === job.id}
-                            className="text-red-600 hover:text-red-900 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            {cancellingId === job.id ? "Cancelling..." : "Cancel"}
-                          </button>
+                          <>
+                            <button
+                              onClick={() => handleSendNow(job.id)}
+                              disabled={sendingId === job.id}
+                              className="text-green-600 hover:text-green-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              {sendingId === job.id ? "Sending..." : "Send Now"}
+                            </button>
+                            <button
+                              onClick={() => handleCancel(job.id)}
+                              disabled={cancellingId === job.id}
+                              className="text-red-600 hover:text-red-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              {cancellingId === job.id ? "Cancelling..." : "Cancel"}
+                            </button>
+                          </>
                         )}
                       </div>
                     </td>

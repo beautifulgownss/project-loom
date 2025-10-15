@@ -17,7 +17,7 @@ class FollowUpJobBase(BaseModel):
 
 class FollowUpJobCreate(FollowUpJobBase):
     """Schema for creating a follow-up job."""
-    connection_id: int
+    connection_id: Optional[int] = None  # If not provided, uses user's first active connection
     original_message_id: Optional[str] = None
 
 

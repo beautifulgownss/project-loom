@@ -26,6 +26,10 @@ def init_database():
 
     print("🗄️  Initializing database...")
 
+    # Drop all existing tables
+    print("🧹 Dropping existing tables...")
+    Base.metadata.drop_all(bind=engine)
+
     # Create all tables
     print("📋 Creating tables...")
     Base.metadata.create_all(bind=engine)

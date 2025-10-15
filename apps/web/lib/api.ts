@@ -17,7 +17,7 @@ export interface GenerateDraftResponse {
 }
 
 export interface CreateFollowUpRequest {
-  connection_id: number;
+  connection_id?: number;  // Optional - uses user's first active connection if not provided
   original_recipient: string;
   original_subject: string;
   original_body: string;
@@ -215,6 +215,15 @@ class APIClient {
    */
   async cancelFollowUp(jobId: number): Promise<FollowUpJobResponse> {
     return this.request<FollowUpJobResponse>(`/followups/${jobId}/cancel`, {
+      method: "POST",
+    });
+  }
+
+  /**
+   * Send a follow-up job immediately (for testing)
+   */
+  async sendFollowUpNow(jobId: number): Promise<FollowUpJobResponse> {
+    return this.request<FollowUpJobResponse>(`/followups/${jobId}/send-now`, {
       method: "POST",
     });
   }

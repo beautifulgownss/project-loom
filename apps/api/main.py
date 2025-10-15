@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.routes import health, followups, ai, sequences, analytics
+from app.routes import health, followups, ai, sequences, analytics, connections
 
 # Create FastAPI app
 app = FastAPI(
@@ -23,6 +23,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(health.router, prefix=settings.API_V1_PREFIX, tags=["health"])
+app.include_router(connections.router, prefix=settings.API_V1_PREFIX, tags=["connections"])
 app.include_router(followups.router, prefix=settings.API_V1_PREFIX, tags=["followups"])
 app.include_router(ai.router, prefix=settings.API_V1_PREFIX, tags=["ai"])
 app.include_router(sequences.router, prefix=settings.API_V1_PREFIX, tags=["sequences"])
