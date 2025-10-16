@@ -21,6 +21,7 @@ class User(Base):
     connections = relationship("Connection", back_populates="user", cascade="all, delete-orphan")
     followup_jobs = relationship("FollowUpJob", back_populates="user", cascade="all, delete-orphan")
     settings = relationship("UserSettings", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    replies = relationship("Reply", back_populates="user", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<User(id={self.id}, email='{self.email}')>"

@@ -20,6 +20,7 @@ from app.models.connection import Connection
 from app.models.followup_job import FollowUpJob
 from app.models.sequence import Sequence, SequenceStep, SequenceEnrollment
 from app.models.user_settings import UserSettings
+from app.models.reply import Reply
 
 
 def init_database():
@@ -89,6 +90,7 @@ def init_database():
         print(f"   User Settings: {db.query(UserSettings).count()}")
         print(f"   Connections: {db.query(Connection).count()}")
         print(f"   Follow-up Jobs: {db.query(FollowUpJob).count()}")
+        print(f"   Replies: {db.query(Reply).count()}")
         print(f"   Sequences: {db.query(Sequence).count()}")
         print(f"   Sequence Enrollments: {db.query(SequenceEnrollment).count()}")
 

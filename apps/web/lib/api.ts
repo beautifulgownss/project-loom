@@ -122,6 +122,32 @@ export interface SequenceEnrollmentResponse {
   updated_at: string | null;
 }
 
+// Reply types
+export interface ReplyResponse {
+  id: number;
+  followup_job_id: number;
+  user_id: number;
+  from_email: string;
+  from_name: string | null;
+  subject: string;
+  body: string;
+  html_body: string | null;
+  message_id: string | null;
+  in_reply_to: string | null;
+  received_at: string;
+  created_at: string;
+  followup_job?: FollowUpJobResponse;
+}
+
+export interface SimulateReplyRequest {
+  followup_job_id: number;
+  from_email?: string;
+  from_name?: string;
+  subject?: string;
+  body: string;
+  html_body?: string;
+}
+
 class APIClient {
   private baseURL: string;
 
@@ -396,6 +422,48 @@ class APIClient {
     best_day: string | null;
   }> {
     return this.request("/analytics/insights");
+  }
+
+  // Reply methods
+
+  /**
+   * List all replies
+   */
+  async listReplies(params?: {
+    limit?: number;
+    offset?: number;
+    search?: string;
+    start_date?: string;
+    end_date?: string;
+  }): Promise<ReplyResponse[]> {
+    const searchParams = new URLSearchParams();
+    if (params?.limit) searchParams.append("limit", params.limit.toString());
+    if (params?.offset) searchParams.append("offset", params.offset.toString());
+    if (params?.search) searchParams.append("search", params.search);
+    if (params?.start_date) searchParams.append("start_date", params.start_date);
+    if (params?.end_date) searchParams.append("end_date", params.end_date);
+
+    const query = searchParams.toString();
+    return this.request<ReplyResponse[]>(
+      `/replies${query ? `?${query}` : ""}`
+    );
+  }
+
+  /**
+   * Get a specific reply
+   */
+  async getReply(replyId: number): Promise<ReplyResponse> {
+    return this.request<ReplyResponse>(`/replies/${replyId}`);
+  }
+
+  /**
+   * Simulate a reply (for testing)
+   */
+  async simulateReply(data: SimulateReplyRequest): Promise<ReplyResponse> {
+    return this.request<ReplyResponse>("/test/simulate-reply", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
   }
 }
 
