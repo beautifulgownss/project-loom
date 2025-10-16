@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.routes import health, followups, ai, sequences, analytics, connections
+from app.routes import settings as settings_router
 
 # Create FastAPI app
 app = FastAPI(
@@ -28,6 +29,7 @@ app.include_router(followups.router, prefix=settings.API_V1_PREFIX, tags=["follo
 app.include_router(ai.router, prefix=settings.API_V1_PREFIX, tags=["ai"])
 app.include_router(sequences.router, prefix=settings.API_V1_PREFIX, tags=["sequences"])
 app.include_router(analytics.router, prefix=settings.API_V1_PREFIX, tags=["analytics"])
+app.include_router(settings_router.router, prefix=settings.API_V1_PREFIX, tags=["settings"])
 
 # Root endpoint
 @app.get("/")
