@@ -7,6 +7,7 @@ from app.core.database import get_db
 from app.core.deps import get_current_user
 from app.models.user import User
 from app.models.user_settings import UserSettings
+from app.models.brand import Brand
 from app.schemas.followup_job import GenerateDraftRequest, GenerateDraftResponse
 
 router = APIRouter()
@@ -173,13 +174,38 @@ async def generate_draft(
         HTTPException: If OpenAI API fails or response is invalid
     """
     try:
-        # Get user settings for brand voice and signature
-        user_settings = db.query(UserSettings).filter(
-            UserSettings.user_id == current_user.id
-        ).first()
+        brand_voice = None
+        email_signature = None
 
-        brand_voice = user_settings.brand_voice if user_settings else None
-        email_signature = user_settings.email_signature if user_settings else None
+        # If brand_id is provided, use Brand model
+        if request.brand_id:
+            brand = db.query(Brand).filter(
+                Brand.id == request.brand_id,
+                Brand.user_id == current_user.id,
+                Brand.is_active == True
+            ).first()
+
+            if brand:
+                # Convert Brand model to brand_voice dict format
+                brand_voice = {
+                    "personality": brand.personality or "professional",
+                    "tone_guidelines": {
+                        "dos": brand.example_phrases.get("do_say", []) if brand.example_phrases else [],
+                        "donts": brand.example_phrases.get("dont_say", []) if brand.example_phrases else []
+                    }
+                }
+                # Add tone attributes to brand voice
+                if brand.tone_attributes:
+                    for key, value in brand.tone_attributes.items():
+                        brand_voice[key] = value
+        else:
+            # Fallback to user settings for brand voice and signature
+            user_settings = db.query(UserSettings).filter(
+                UserSettings.user_id == current_user.id
+            ).first()
+
+            brand_voice = user_settings.brand_voice if user_settings else None
+            email_signature = user_settings.email_signature if user_settings else None
 
         subject, body = generate_followup_draft(
             original_subject=request.original_subject,

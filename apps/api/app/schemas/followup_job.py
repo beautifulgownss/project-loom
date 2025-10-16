@@ -55,6 +55,7 @@ class GenerateDraftRequest(BaseModel):
     original_body: str
     recipient_name: Optional[str] = None
     tone: str = Field(default="professional", pattern="^(professional|friendly|urgent)$")
+    brand_id: Optional[int] = None  # Optional brand ID to use brand voice
 
 
 class GenerateDraftResponse(BaseModel):

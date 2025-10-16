@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.routes import health, followups, ai, sequences, analytics, connections, replies
+from app.routes import health, followups, ai, sequences, analytics, connections, replies, brands
 from app.routes import settings as settings_router
 
 # Create FastAPI app
@@ -27,6 +27,7 @@ app.include_router(health.router, prefix=settings.API_V1_PREFIX, tags=["health"]
 app.include_router(connections.router, prefix=settings.API_V1_PREFIX, tags=["connections"])
 app.include_router(followups.router, prefix=settings.API_V1_PREFIX, tags=["followups"])
 app.include_router(replies.router, prefix=settings.API_V1_PREFIX, tags=["replies"])
+app.include_router(brands.router, prefix=settings.API_V1_PREFIX, tags=["brands"])
 app.include_router(ai.router, prefix=settings.API_V1_PREFIX, tags=["ai"])
 app.include_router(sequences.router, prefix=settings.API_V1_PREFIX, tags=["sequences"])
 app.include_router(analytics.router, prefix=settings.API_V1_PREFIX, tags=["analytics"])
@@ -37,7 +38,7 @@ app.include_router(settings_router.router, prefix=settings.API_V1_PREFIX, tags=[
 async def root():
     """Root endpoint."""
     return {
-        "message": "Project Loom API",
+        "message": "Outreach Studio API",
         "version": settings.VERSION,
         "docs": f"{settings.API_V1_PREFIX}/docs"
     }

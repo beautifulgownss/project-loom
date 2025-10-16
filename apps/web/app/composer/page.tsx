@@ -7,6 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { apiClient, GenerateDraftResponse } from "@/lib/api";
 import { DraftPreviewModal } from "@/components/DraftPreviewModal";
+import BrandSwitcher from "@/components/BrandSwitcher";
+import { useVoiceStore } from "@/lib/stores/voice-store";
 
 // Form validation schema
 const composerSchema = z.object({
@@ -27,6 +29,7 @@ type ComposerFormData = z.infer<typeof composerSchema>;
 
 export default function ComposerPage() {
   const searchParams = useSearchParams();
+  const { selectedBrand } = useVoiceStore();
   const [isGenerating, setIsGenerating] = useState(false);
   const [isScheduling, setIsScheduling] = useState(false);
   const [draft, setDraft] = useState<GenerateDraftResponse | null>(null);
@@ -74,6 +77,7 @@ export default function ComposerPage() {
         original_body: data.thread_context,
         recipient_name: data.recipient_name,
         tone: data.tone,
+        brand_id: selectedBrand?.id,  // Include brand ID if selected
       });
 
       setDraft(generatedDraft);
@@ -124,12 +128,28 @@ export default function ComposerPage() {
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Create Follow-Up
-          </h1>
-          <p className="mt-2 text-sm text-gray-600">
-            AI will generate a personalized follow-up email based on your context
-          </p>
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold text-gray-900">
+                Create Follow-Up
+              </h1>
+              <p className="mt-2 text-sm text-gray-600">
+                AI will generate a personalized follow-up email based on your context
+              </p>
+              {/* Brand Indicator */}
+              {selectedBrand && (
+                <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-50 border border-indigo-200 rounded-lg">
+                  <div className="w-2 h-2 bg-indigo-600 rounded-full"></div>
+                  <span className="text-sm text-indigo-700 font-medium">
+                    Using: {selectedBrand.name}
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="ml-4">
+              <BrandSwitcher />
+            </div>
+          </div>
         </div>
 
         {/* Success Message */}

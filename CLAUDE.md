@@ -1,7 +1,9 @@
-# Project Loom - AI Inbox Follow-Up Automation
+# Outreach Studio - AI-Powered Email Automation
+
+> **Note**: The repository is named `project-loom`, but the product is branded as **Outreach Studio**.
 
 ## Overview
-Modular marketing toolkit starting with AI-powered email follow-up automation.
+AI-powered email follow-up automation platform with Voice Studio for brand voice management.
 
 ## Tech Stack
 - **Frontend**: Next.js 14 (App Router), React 18, TypeScript, TailwindCSS
@@ -40,12 +42,13 @@ project-loom/
 - **Python**: Pydantic v2 models, type hints required
 - **React**: Functional components with hooks, no class components
 
-## Current MVP Focus
-Building AI Inbox Follow-Up feature:
-- Connect email sending (Resend/Gmail OAuth)
-- Create follow-up rules (delay, tone, stop-on-reply)
-- AI-generated drafts with preview
-- Queue management & metrics
+## Current Features
+Outreach Studio includes:
+- **Voice Studio**: Create and manage multiple brand voices
+- **AI Follow-Ups**: Generate intelligent follow-up emails
+- **Sequences**: Build multi-step email campaigns
+- **Analytics**: Track performance and reply rates
+- **Reply Detection**: Auto-stop sequences on replies
 
 ## API Endpoints (FastAPI)
 Base: `/v1`

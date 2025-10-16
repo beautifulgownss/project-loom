@@ -8,7 +8,7 @@ class Settings(BaseSettings):
 
     # API
     API_V1_PREFIX: str = "/v1"
-    PROJECT_NAME: str = "Project Loom API"
+    PROJECT_NAME: str = "Outreach Studio API"
     VERSION: str = "0.1.0"
 
     # CORS

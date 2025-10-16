@@ -9,6 +9,7 @@ export interface GenerateDraftRequest {
   original_body: string;
   recipient_name?: string;
   tone: "professional" | "friendly" | "urgent";
+  brand_id?: number;  // Optional brand ID to use brand voice
 }
 
 export interface GenerateDraftResponse {
@@ -146,6 +147,50 @@ export interface SimulateReplyRequest {
   subject?: string;
   body: string;
   html_body?: string;
+}
+
+// Brand types
+export interface BrandBase {
+  name: string;
+  description?: string | null;
+  industry?: string | null;
+  personality?: string | null;
+  tone_attributes?: Record<string, any>;
+  example_phrases?: Record<string, any>;
+}
+
+export interface BrandCreate extends BrandBase {
+  is_primary?: boolean;
+}
+
+export interface BrandUpdate {
+  name?: string;
+  description?: string | null;
+  industry?: string | null;
+  personality?: string | null;
+  tone_attributes?: Record<string, any>;
+  example_phrases?: Record<string, any>;
+  is_active?: boolean;
+  is_primary?: boolean;
+}
+
+export interface BrandResponse extends BrandBase {
+  id: number;
+  user_id: number;
+  is_active: boolean;
+  is_primary: boolean;
+  created_at: string;
+  updated_at: string | null;
+}
+
+export interface BrandListItem {
+  id: number;
+  name: string;
+  industry: string | null;
+  personality: string | null;
+  is_active: boolean;
+  is_primary: boolean;
+  created_at: string;
 }
 
 class APIClient {
@@ -464,6 +509,73 @@ class APIClient {
       method: "POST",
       body: JSON.stringify(data),
     });
+  }
+
+  // Brand methods
+
+  /**
+   * Create a new brand
+   */
+  async createBrand(data: BrandCreate): Promise<BrandResponse> {
+    return this.request<BrandResponse>("/brands", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+
+  /**
+   * List all brands
+   */
+  async listBrands(params?: {
+    is_active?: boolean;
+    limit?: number;
+    offset?: number;
+  }): Promise<BrandListItem[]> {
+    const searchParams = new URLSearchParams();
+    if (params?.is_active !== undefined) searchParams.append("is_active", params.is_active.toString());
+    if (params?.limit) searchParams.append("limit", params.limit.toString());
+    if (params?.offset) searchParams.append("offset", params.offset.toString());
+
+    const query = searchParams.toString();
+    return this.request<BrandListItem[]>(
+      `/brands${query ? `?${query}` : ""}`
+    );
+  }
+
+  /**
+   * Get a specific brand
+   */
+  async getBrand(brandId: number): Promise<BrandResponse> {
+    return this.request<BrandResponse>(`/brands/${brandId}`);
+  }
+
+  /**
+   * Update a brand
+   */
+  async updateBrand(
+    brandId: number,
+    data: BrandUpdate
+  ): Promise<BrandResponse> {
+    return this.request<BrandResponse>(`/brands/${brandId}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+  }
+
+  /**
+   * Delete a brand
+   */
+  async deleteBrand(brandId: number): Promise<void> {
+    return this.request<void>(`/brands/${brandId}`, {
+      method: "DELETE",
+    });
+  }
+
+  /**
+   * Get the user's primary (default) brand
+   */
+  async getPrimaryBrand(): Promise<BrandResponse> {
+    return this.request<BrandResponse>("/brands/primary/current");
   }
 }
 

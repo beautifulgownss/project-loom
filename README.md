@@ -1,10 +1,12 @@
-# Project Loom 🚀
+# Outreach Studio 🚀
 
 <div align="center">
 
-**AI-Powered Marketing Automation Platform**
+**AI-Powered Email Follow-Up Automation**
 
-*Intelligent email follow-ups that actually get replies*
+*Intelligent outreach that maintains your brand voice and actually gets replies*
+
+> **Note**: This repository is named `project-loom` for internal purposes, but the product is branded as **Outreach Studio**.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
@@ -18,14 +20,14 @@
 
 ## 📖 Overview
 
-**Project Loom** is a modular marketing automation toolkit designed to help teams scale their outreach without losing the human touch. Starting with AI-powered email follow-ups, Loom intelligently manages your communication sequences, detects replies, and adapts to your brand voice.
+**Outreach Studio** is an AI-powered email automation platform designed to help teams scale their outreach without losing the human touch. With intelligent follow-ups, brand voice management, and advanced sequence building, Outreach Studio ensures your emails stay personal, timely, and effective.
 
-### Why Project Loom?
+### Why Outreach Studio?
 
 - **🎯 Smart, Not Spammy**: AI-generated follow-ups that match your brand voice and context
 - **🔄 Reply-Aware**: Automatically detects responses and stops sequences to prevent over-messaging
 - **📊 Data-Driven**: Real-time analytics show what's working and suggest improvements
-- **🏗️ Modular Design**: Start with email automation, expand to content management and advanced analytics
+- **🎨 Voice Studio**: Manage multiple brand voices and maintain consistency across all communications
 - **🚀 Production-Ready**: Built with enterprise-grade tools and best practices
 
 ---
@@ -34,9 +36,9 @@
 
 ### Email Automation
 - **✉️ AI Follow-Up Generation** - GPT-4 powered drafts that understand context and tone
-- **📧 Multi-Step Sequences** - Visual timeline builder for complex email campaigns
-- **🎨 Brand Voice Integration** - Customize tone, style, and messaging guidelines
-- **📚 15 Pre-Built Templates** - Sales, marketing, customer success, and general outreach
+- **📧 Multi-Step Sequences** - Build complex email campaigns with custom delays and conditions
+- **🎨 Voice Studio** - Create and manage multiple brand voices with personality profiles and tone attributes
+- **📚 Pre-Built Templates** - Quick-start templates for common outreach scenarios
 
 ### Intelligence & Insights
 - **🔄 Reply Detection** - Automatic reply tracking with sequence stopping
@@ -52,8 +54,8 @@
 
 ### Settings & Customization
 - **⚙️ Flexible Configuration** - API keys, email signatures, notification preferences
-- **🎭 Brand Voice Profiles** - Multiple voice settings for different use cases
-- **🔗 Email Provider Support** - Resend API (primary), Gmail OAuth (coming soon)
+- **🎭 Multiple Brand Voices** - Switch between different brand personalities instantly
+- **🔗 Email Provider Support** - Resend API (primary), Gmail OAuth (planned)
 
 ---
 
@@ -342,7 +344,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👤 Author
 
-**Project Loom Team**
+**Outreach Studio Team**
 
 - GitHub: [@beautifulgownss](https://github.com/beautifulgownss)
 - Website: [Coming Soon]
