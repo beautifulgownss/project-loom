@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { apiClient, GenerateDraftResponse } from "@/lib/api";
 import { DraftPreviewModal } from "@/components/DraftPreviewModal";
+import { EmailPreviewModal } from "@/components/EmailPreviewModal";
 import BrandSwitcher from "@/components/BrandSwitcher";
 import { useVoiceStore } from "@/lib/stores/voice-store";
 
@@ -36,6 +37,8 @@ export default function ComposerPage() {
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const [showPreview, setShowPreview] = useState(false);
 
   const {
     register,
@@ -89,6 +92,23 @@ export default function ComposerPage() {
     }
   };
 
+  const onPreviewEmail = () => {
+    const formData = getValues();
+
+    // Basic validation before preview
+    if (!formData.to_email || !formData.subject || !formData.thread_context) {
+      setError("Please fill in recipient email, subject, and thread context to preview");
+      return;
+    }
+
+    // Create a mock draft for preview
+    setDraft({
+      subject: `Re: ${formData.subject}`,
+      body: formData.thread_context, // This will be replaced with actual AI draft
+    });
+    setShowPreview(true);
+  };
+
   const onScheduleFollowUp = async () => {
     if (!draft) return;
 
@@ -111,6 +131,7 @@ export default function ComposerPage() {
 
       setSuccess("Follow-up scheduled successfully!");
       setShowModal(false);
+      setShowPreview(false);
       setDraft(null);
       reset();
 
@@ -127,26 +148,26 @@ export default function ComposerPage() {
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-start justify-between">
+        <div className="mb-10">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-4xl font-bold text-gray-900 mb-3">
                 Create Follow-Up
               </h1>
-              <p className="mt-2 text-sm text-gray-600">
+              <p className="text-base text-gray-600 leading-relaxed">
                 AI will generate a personalized follow-up email based on your context
               </p>
               {/* Brand Indicator */}
               {selectedBrand && (
-                <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-50 border border-indigo-200 rounded-lg">
-                  <div className="w-2 h-2 bg-indigo-600 rounded-full"></div>
-                  <span className="text-sm text-indigo-700 font-medium">
+                <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg shadow-sm">
+                  <div className="w-2 h-2 bg-indigo-600 rounded-full animate-pulse"></div>
+                  <span className="text-sm text-indigo-700 font-semibold">
                     Using: {selectedBrand.name}
                   </span>
                 </div>
               )}
             </div>
-            <div className="ml-4">
+            <div className="flex-shrink-0">
               <BrandSwitcher />
             </div>
           </div>
@@ -201,126 +222,155 @@ export default function ComposerPage() {
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit(onGenerateDraft)} className="bg-white shadow-sm rounded-lg p-6 space-y-6">
+        <form onSubmit={handleSubmit(onGenerateDraft)} className="bg-white shadow-md rounded-xl border border-gray-200 p-6 sm:p-8 space-y-6">
           {/* Recipient Email */}
           <div>
-            <label htmlFor="to_email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="to_email" className="block text-sm font-semibold text-gray-900 mb-2">
               Recipient Email <span className="text-red-500">*</span>
             </label>
             <input
               type="email"
               id="to_email"
               {...register("to_email")}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 border"
+              className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 text-base px-4 py-3 border transition-colors"
               placeholder="client@example.com"
             />
             {errors.to_email && (
-              <p className="mt-1 text-sm text-red-600">{errors.to_email.message}</p>
+              <p className="mt-2 text-sm text-red-600">{errors.to_email.message}</p>
             )}
           </div>
 
           {/* Recipient Name (Optional) */}
           <div>
-            <label htmlFor="recipient_name" className="block text-sm font-medium text-gray-700 mb-2">
-              Recipient Name (Optional)
+            <label htmlFor="recipient_name" className="block text-sm font-semibold text-gray-900 mb-2">
+              Recipient Name <span className="text-gray-400 font-normal">(Optional)</span>
             </label>
             <input
               type="text"
               id="recipient_name"
               {...register("recipient_name")}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 border"
+              className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 text-base px-4 py-3 border transition-colors"
               placeholder="John Doe"
             />
           </div>
 
           {/* Subject */}
           <div>
-            <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="subject" className="block text-sm font-semibold text-gray-900 mb-2">
               Original Email Subject <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               id="subject"
               {...register("subject")}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 border"
+              className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 text-base px-4 py-3 border transition-colors"
               placeholder="Project Proposal"
             />
             {errors.subject && (
-              <p className="mt-1 text-sm text-red-600">{errors.subject.message}</p>
+              <p className="mt-2 text-sm text-red-600">{errors.subject.message}</p>
             )}
           </div>
 
           {/* Thread Context */}
           <div>
-            <label htmlFor="thread_context" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="thread_context" className="block text-sm font-semibold text-gray-900 mb-2">
               Original Email / Thread Context <span className="text-red-500">*</span>
             </label>
             <textarea
               id="thread_context"
               {...register("thread_context")}
               rows={6}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 border"
+              className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 text-base px-4 py-3 border transition-colors"
               placeholder="Hi John, I wanted to share our proposal for the upcoming project..."
             />
             {errors.thread_context && (
-              <p className="mt-1 text-sm text-red-600">{errors.thread_context.message}</p>
+              <p className="mt-2 text-sm text-red-600">{errors.thread_context.message}</p>
             )}
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-500">
               Provide the context of your original email or thread
             </p>
           </div>
 
-          {/* Tone Selection */}
-          <div>
-            <label htmlFor="tone" className="block text-sm font-medium text-gray-700 mb-2">
-              Follow-Up Tone <span className="text-red-500">*</span>
-            </label>
-            <select
-              id="tone"
-              {...register("tone")}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 border"
+          {/* Two Column Layout for Tone and Delay */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* Tone Selection */}
+            <div>
+              <label htmlFor="tone" className="block text-sm font-semibold text-gray-900 mb-2">
+                Follow-Up Tone <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="tone"
+                {...register("tone")}
+                className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 text-base px-4 py-3 border transition-colors"
+              >
+                <option value="professional">Professional</option>
+                <option value="friendly">Friendly</option>
+                <option value="urgent">Urgent</option>
+              </select>
+              {errors.tone && (
+                <p className="mt-2 text-sm text-red-600">{errors.tone.message}</p>
+              )}
+            </div>
+
+            {/* Delay Hours */}
+            <div>
+              <label htmlFor="delay_hours" className="block text-sm font-semibold text-gray-900 mb-2">
+                Delay (Hours) <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                id="delay_hours"
+                {...register("delay_hours")}
+                min="1"
+                max="168"
+                className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 text-base px-4 py-3 border transition-colors"
+              />
+              {errors.delay_hours && (
+                <p className="mt-2 text-sm text-red-600">{errors.delay_hours.message}</p>
+              )}
+              <p className="mt-2 text-sm text-gray-500">
+                1-168 hours
+              </p>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="pt-6 flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              onClick={onPreviewEmail}
+              className="flex-1 flex justify-center items-center py-3 px-6 border-2 border-gray-300 rounded-lg shadow-sm text-base font-semibold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
             >
-              <option value="professional">Professional</option>
-              <option value="friendly">Friendly</option>
-              <option value="urgent">Urgent</option>
-            </select>
-            {errors.tone && (
-              <p className="mt-1 text-sm text-red-600">{errors.tone.message}</p>
-            )}
-          </div>
-
-          {/* Delay Hours */}
-          <div>
-            <label htmlFor="delay_hours" className="block text-sm font-medium text-gray-700 mb-2">
-              Delay (Hours) <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="number"
-              id="delay_hours"
-              {...register("delay_hours")}
-              min="1"
-              max="168"
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 border"
-            />
-            {errors.delay_hours && (
-              <p className="mt-1 text-sm text-red-600">{errors.delay_hours.message}</p>
-            )}
-            <p className="mt-1 text-sm text-gray-500">
-              Time to wait before sending follow-up (1-168 hours)
-            </p>
-          </div>
-
-          {/* Submit Button */}
-          <div className="pt-4">
+              <svg
+                className="mr-2 h-5 w-5 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+              Preview Email
+            </button>
             <button
               type="submit"
               disabled={isGenerating}
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 flex justify-center items-center py-3 px-6 border border-transparent rounded-lg shadow-sm text-base font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               {isGenerating ? (
                 <>
                   <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    className="animate-spin mr-3 h-5 w-5 text-white"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -342,19 +392,46 @@ export default function ComposerPage() {
                   Generating Draft...
                 </>
               ) : (
-                "Generate AI Draft"
+                <>
+                  <svg
+                    className="mr-2 h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
+                  Generate AI Draft
+                </>
               )}
             </button>
           </div>
         </form>
 
-        {/* Draft Preview Modal */}
+        {/* Draft Preview Modal (AI Generated) */}
         <DraftPreviewModal
           draft={draft}
           isOpen={showModal}
           onClose={() => setShowModal(false)}
           onSchedule={onScheduleFollowUp}
           isScheduling={isScheduling}
+        />
+
+        {/* Email Preview Modal */}
+        <EmailPreviewModal
+          subject={draft?.subject || ""}
+          body={draft?.body || ""}
+          fromEmail="onboarding@resend.dev"
+          toEmail={getValues("to_email") || ""}
+          isOpen={showPreview}
+          onClose={() => setShowPreview(false)}
+          onSend={onScheduleFollowUp}
+          isSending={isScheduling}
         />
       </div>
     </div>
