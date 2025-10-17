@@ -9,10 +9,15 @@
 > **Note**: This repository is named `project-loom` for internal purposes, but the product is branded as **Outreach Studio**.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Node 20+](https://img.shields.io/badge/node-20+-green.svg)](https://nodejs.org/)
 [![Next.js 14](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688.svg)](https://fastapi.tiangolo.com/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind-3.0-38B2AC.svg)](https://tailwindcss.com/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+
+📸 **Screenshots coming soon** - app is live and functional!
 
 </div>
 
@@ -34,28 +39,132 @@
 
 ## ✨ Features
 
-### Email Automation
-- **✉️ AI Follow-Up Generation** - GPT-4 powered drafts that understand context and tone
-- **📧 Multi-Step Sequences** - Build complex email campaigns with custom delays and conditions
-- **🎨 Voice Studio** - Create and manage multiple brand voices with personality profiles and tone attributes
-- **📚 Pre-Built Templates** - Quick-start templates for common outreach scenarios
+<table>
+<tr>
+<td width="50%" valign="top">
 
-### Intelligence & Insights
-- **🔄 Reply Detection** - Automatic reply tracking with sequence stopping
-- **📊 Analytics Dashboard** - Performance metrics, reply rates, and trend analysis
-- **💡 AI Insights** - Smart recommendations for improving engagement
-- **📈 Visual Reports** - Charts powered by Recharts for clear data visualization
+### 📧 Email Automation
 
-### Developer Experience
-- **⚡ Fast Development** - Hot reload for both frontend and backend
-- **🎯 Type Safety** - Full TypeScript support with strict mode
-- **📝 API Documentation** - Auto-generated OpenAPI docs at `/docs`
-- **🧪 Test Simulation** - Built-in tools to test reply detection without real emails
+- **✉️ AI Follow-Up Generation**
+  GPT-4 powered drafts that understand context and tone
 
-### Settings & Customization
-- **⚙️ Flexible Configuration** - API keys, email signatures, notification preferences
-- **🎭 Multiple Brand Voices** - Switch between different brand personalities instantly
-- **🔗 Email Provider Support** - Resend API (primary), Gmail OAuth (planned)
+- **📧 Multi-Step Sequences**
+  Build complex campaigns with custom delays and conditions
+
+- **🎨 Voice Studio**
+  Manage multiple brand voices with personality profiles
+
+- **📚 Pre-Built Templates**
+  Quick-start templates for common outreach scenarios
+
+- **👁️ Email Preview**
+  Gmail/Outlook-style preview before sending
+
+### 💡 Intelligence & Insights
+
+- **🔄 Reply Detection**
+  Automatic reply tracking with sequence stopping
+
+- **📊 Analytics Dashboard**
+  Performance metrics, reply rates, and trend analysis
+
+- **💡 AI Insights**
+  Smart recommendations for improving engagement
+
+- **📈 Visual Reports**
+  Interactive charts powered by Recharts
+
+</td>
+<td width="50%" valign="top">
+
+### 🛠️ Developer Experience
+
+- **⚡ Fast Development**
+  Hot reload for both frontend and backend
+
+- **🎯 Type Safety**
+  Full TypeScript support with strict mode
+
+- **📝 API Documentation**
+  Auto-generated OpenAPI docs at `/docs`
+
+- **🧪 Test Simulation**
+  Built-in tools to test reply detection without real emails
+
+- **🏗️ Monorepo Structure**
+  Organized workspace with pnpm + Turbo
+
+### ⚙️ Settings & Customization
+
+- **🔧 Flexible Configuration**
+  API keys, email signatures, notification preferences
+
+- **🎭 Brand Voice Management**
+  Switch between different brand personalities instantly
+
+- **🔗 Email Provider Support**
+  Resend API (primary), Gmail OAuth (planned)
+
+- **🌙 Dark Mode Support**
+  Full dark mode throughout the application
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📸 Screenshots
+
+> 📸 **Note**: Screenshots are being prepared. The application is fully functional and you can run it locally following the [Getting Started](#-getting-started) guide below.
+
+### Dashboard Overview
+![Dashboard](docs/screenshots/dashboard.png)
+
+*Main dashboard showing follow-up jobs, quick stats, and recent activity. Provides at-a-glance view of your outreach performance.*
+
+### Email Composer with AI Generation
+![Email Composer](docs/screenshots/composer.png)
+
+*Intelligent email composer with AI-powered draft generation. Features brand voice selection, tone customization, and real-time preview.*
+
+### Email Preview Modal
+![Email Preview Modal](docs/screenshots/email-preview.png)
+
+*Gmail/Outlook-style email preview showing exactly how your email will appear in the recipient's inbox before sending.*
+
+### Multi-Step Sequences
+![Sequences](docs/screenshots/sequences.png)
+
+*Visual sequence builder for creating multi-touch email campaigns. Drag-and-drop interface with conditional logic and automatic reply detection.*
+
+### Analytics Dashboard
+![Analytics](docs/screenshots/analytics.png)
+
+*Comprehensive analytics dashboard with reply rates, engagement trends, and AI-powered insights. Real-time charts powered by Recharts.*
+
+### Voice Studio
+![Voice Studio](docs/screenshots/voice-studio.png)
+
+*Brand voice management system. Create and maintain multiple brand personalities with custom tone attributes and example phrases.*
+
+---
+
+## 🌐 Live Demo
+
+> 🚀 **Coming Soon**: A hosted demo instance will be available at `demo.outreach.studio`
+
+For now, you can run the application locally by following the [Getting Started](#-getting-started) guide below. The setup takes ~5 minutes!
+
+**Quick Start:**
+```bash
+# Clone and install
+git clone https://github.com/beautifulgownss/project-loom.git
+cd project-loom && pnpm install
+
+# Set up environment variables and run
+# See detailed instructions in Getting Started section
+```
 
 ---
 
