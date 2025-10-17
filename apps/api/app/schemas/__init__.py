@@ -8,6 +8,14 @@ from app.schemas.followup_job import (
     GenerateDraftRequest,
     GenerateDraftResponse,
 )
+from app.schemas.prospect import (
+    PainPointAnalysis,
+    ProspectCreate,
+    ProspectUpdate,
+    ProspectResponse,
+    ProspectImportRequest,
+    ProspectRefreshRequest,
+)
 
 __all__ = [
     "UserCreate",
@@ -21,4 +29,10 @@ __all__ = [
     "FollowUpJobResponse",
     "GenerateDraftRequest",
     "GenerateDraftResponse",
+    "PainPointAnalysis",
+    "ProspectCreate",
+    "ProspectUpdate",
+    "ProspectResponse",
+    "ProspectImportRequest",
+    "ProspectRefreshRequest",
 ]

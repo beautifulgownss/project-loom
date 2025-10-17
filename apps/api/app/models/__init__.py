@@ -5,5 +5,6 @@ from app.models.followup_job import FollowUpJob
 from app.models.user_settings import UserSettings
 from app.models.reply import Reply
 from app.models.brand import Brand
+from app.models.prospect import Prospect
 
-__all__ = ["User", "Connection", "FollowUpJob", "UserSettings", "Reply", "Brand"]
+__all__ = ["User", "Connection", "FollowUpJob", "UserSettings", "Reply", "Brand", "Prospect"]
